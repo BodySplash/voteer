@@ -1,4 +1,4 @@
-package voteer.domain.poll
+package voteer.domain.poll.interpreter
 
 import voteer.domain.ErrorCode
 
