@@ -14,17 +14,18 @@ object PollServices extends PollService[PollId, PollKey, OpenPoll, PendingPoll, 
 
   override def addChoice(poll: PendingPoll, choice: Choice): Try[PendingPoll] = {
     if (poll.choices.contains(choice)) {
-      return Failure(new BusinessError(DuplicateChoice))
+      Failure(new BusinessError(DuplicateChoice))
+    } else {
+      Success(poll.copy(choices = choice :: poll.choices))
     }
-    val newChoices: List[String] = choice :: poll.choices
-    Success(poll.copy(choices = newChoices))
   }
 
   override def open(poll: PendingPoll): Try[OpenPoll] = {
     if (poll.choices.isEmpty) {
-      return Failure(new BusinessError(EmptyPoll))
+      Failure(new BusinessError(EmptyPoll))
+    } else {
+      Success(OpenPoll(poll.id, poll.adminKey, poll.choices, poll.options))
     }
-    Success(OpenPoll(poll.id, poll.adminKey, poll.choices, poll.options))
   }
 
   override def close(poll: OpenPoll): Try[ClosePoll] = ???
