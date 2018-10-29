@@ -8,7 +8,7 @@ object common {
   type Choice = String
 }
 
-trait Poll {
+sealed trait Poll {
   def id: PollId
 
   def choices: List[Choice]
@@ -19,10 +19,10 @@ trait Poll {
 
 }
 
-case class PollOptions(withComments: Boolean)
+final case class PollOptions(withComments: Boolean)
 
-case class PendingPoll(id: PollId, adminKey: PollKey, choices: List[Choice] = List(), options: PollOptions = PollOptions(false)) extends Poll
+final case class PendingPoll private(id: PollId, adminKey: PollKey, choices: List[Choice] = List(), options: PollOptions = PollOptions(false)) extends Poll
 
-case class OpenPoll(id: PollId, adminKey: PollKey, choices: List[Choice], options: PollOptions) extends Poll
+final case class OpenPoll private(id: PollId, adminKey: PollKey, choices: List[Choice], options: PollOptions) extends Poll
 
-case class ClosePoll(id: PollId, adminKey: PollKey, choices: List[Choice], options: PollOptions) extends Poll
+final case class ClosePoll private(id: PollId, adminKey: PollKey, choices: List[Choice], options: PollOptions) extends Poll
