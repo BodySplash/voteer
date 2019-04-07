@@ -1,11 +1,9 @@
 package voteer.domain.vote
 
-import voteer.domain.poll.OpenPoll
+import scala.util.Try
 
-trait VoteServices {
-  def vote(poll: OpenPoll, participantName: String, choices: List[String]) {
+trait VoteService[Poll, Participant, Choices, Vote] {
 
-  }
+  def vote(poll: Poll, participant: Participant, choices: Choices): Try[Vote]
+
 }
-
-object VoteServices extends VoteServices
